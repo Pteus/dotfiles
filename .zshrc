@@ -22,24 +22,17 @@ source $ZSH/oh-my-zsh.sh
 export LC_ALL='en_US.UTF-8'
 export LANG='en_US.UTF-8'
 
-# ZigUp
-export PATH="$HOME/Zig/zigup:$PATH"
-
 # NPM global installs
 export PATH="$HOME/.npm-global/bin:$PATH"
 
 # PostgreSQL
 export PATH="/usr/local/opt/libpq/bin:$PATH"
 
-# Go environment
-eval "$(goenv init -)"
-
 # Zoxide (Fast directory navigation)
 eval "$(zoxide init --cmd cd zsh)"
 
 # Aliases
 alias vim=nvim
-alias air="$HOME/go/1.23.3/bin/air"
 alias python="python3"
 
 eval "$(starship init zsh)"
