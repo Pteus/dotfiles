@@ -1,44 +1,78 @@
-# Path to your Oh My Zsh installation
-export ZSH="$HOME/.oh-my-zsh"
-
-# Theme
-ZSH_THEME=""
-
-# Speed up `compinit` by skipping security checks on most startups
-autoload -Uz compinit
-ZSH_COMPDUMP="${ZSH_COMPDUMP:-$HOME/.zcompdump}"
-if [[ -f "$ZSH_COMPDUMP" && -z "$(find "$ZSH_COMPDUMP" -mmin +1440)" ]]; then
-  compinit -C  # Fast mode (skips security check)
-else
-  compinit     # Full check (runs once per day)
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Plugins (Keep only essentials)
-plugins=(git)
+PATH="$HOME/.go/bin:$PATH"
+PATH="$HOME/go/bin:$PATH"
+if [[ -f "/opt/homebrew/bin/brew" ]] then
+  # If you're using macOS, you'll want this enabled
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+  PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
+fi
 
-source $ZSH/oh-my-zsh.sh
 
-# Language settings
-export LC_ALL='en_US.UTF-8'
-export LANG='en_US.UTF-8'
+# Set the directory we want to store zinit and plugins
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
 
-# NPM global installs
-export PATH="$HOME/.npm-global/bin:$PATH"
+# Download Zinit, if it's not there yet
+if [ ! -d "$ZINIT_HOME" ]; then
+   mkdir -p "$(dirname $ZINIT_HOME)"
+   git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+fi
 
-# PostgreSQL
-export PATH="/usr/local/opt/libpq/bin:$PATH"
+# Source/Load zinit
+source "${ZINIT_HOME}/zinit.zsh"
 
-# Zoxide (Fast directory navigation)
-eval "$(zoxide init --cmd cd zsh)"
+# Add in Powerlevel10k
+zinit ice depth=1; zinit light romkatv/powerlevel10k
+
+zinit light zsh-users/zsh-syntax-highlighting
+zinit light zsh-users/zsh-completions
+zinit light zsh-users/zsh-autosuggestions
+zinit light Aloxaf/fzf-tab
+
+# Load completions
+autoload -Uz compinit && compinit
+
+zinit cdreplay -q
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Keybindings
+bindkey -e
+bindkey '^p' history-search-backward
+bindkey '^n' history-search-forward
+
+# History
+HISTSIZE=5000
+HISTFILE=~/.local/share/zsh/history
+SAVEHIST=$HISTSIZE
+HISTDUP=erase
+setopt appendhistory
+setopt sharehistory
+setopt hist_ignore_space
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_ignore_dups
+setopt hist_find_no_dups
+
+
+# Completion styling
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' menu no
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
+zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
 # Aliases
-alias vim=nvim
+alias ls='ls --color'
+alias c='clear'
 alias python="python3"
 
-eval "$(starship init zsh)"
-
-# zsh autosuggestions
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-# zsh syntax highlightning
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# Shell integrations
+eval "$(fzf --zsh)"
+eval "$(zoxide init --cmd cd zsh)"
