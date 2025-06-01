@@ -18,8 +18,8 @@ insert = "bar"
 normal = "block"
 select = "underline"
 
-[editor.lsp]
-display-inlay-hints = true
+# [editor.lsp]
+# display-inlay-hints = true
 
 [editor.indent-guides]
 render = true
