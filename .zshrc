@@ -29,13 +29,13 @@ source "${ZINIT_HOME}/zinit.zsh"
 # Add in Powerlevel10k
 zinit ice depth=1; zinit light romkatv/powerlevel10k
 
+# Load completions
+autoload -Uz compinit && compinit
+
 zinit light zsh-users/zsh-syntax-highlighting
 zinit light zsh-users/zsh-completions
 zinit light zsh-users/zsh-autosuggestions
 zinit light Aloxaf/fzf-tab
-
-# Load completions
-autoload -Uz compinit && compinit
 
 zinit cdreplay -q
 
@@ -77,3 +77,8 @@ alias l='ls -lah'
 # Shell integrations
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
+# Fix for Go file completion
+compdef '_files' go
+
+# Improve tab completion behavior
+zstyle ':completion:*' completer _complete _approximate
