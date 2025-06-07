@@ -13,6 +13,7 @@ if [[ -f "/opt/homebrew/bin/brew" ]] then
   PATH="/opt/homebrew/opt/gnu-sed/libexec/gnubin:$PATH"
 fi
 
+export EDITOR=nvim
 
 # Set the directory we want to store zinit and plugins
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
@@ -73,6 +74,7 @@ alias ls='ls --color'
 alias c='clear'
 alias python="python3"
 alias l='ls -lah'
+alias vim='nvim'
 
 # Shell integrations
 eval "$(fzf --zsh)"
