@@ -84,3 +84,7 @@ compdef '_files' go
 
 # Improve tab completion behavior
 zstyle ':completion:*' completer _complete _approximate
+
+# Ruby rbenv
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
