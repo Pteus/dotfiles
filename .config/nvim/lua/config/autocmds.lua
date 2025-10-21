@@ -23,13 +23,16 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		map("gs", vim.lsp.buf.signature_help, "Signature Documentation")
 		map("gD", vim.lsp.buf.declaration, "Goto Declaration")
 		map("gv", "<cmd>vsplit | lua vim.lsp.buf.definition()<cr>", "Goto Definition in Vertical Split")
+		map("gl", vim.diagnostic.open_float, "Show diagnostics under cursor")
 		map("K", vim.lsp.buf.hover, "Hover Documentation")
 
 		map("<leader>ca", vim.lsp.buf.code_action, "Code Actions")
 		map("<leader>cr", vim.lsp.buf.rename, "Rename all references")
 		map("<leader>cf", vim.lsp.buf.format, "Format")
 
-		map("<leader>sd", vim.diagnostic.open_float, "Show diagnostics under cursor")
+		map("<leader>sd", function()
+			builtin.diagnostics({ bufnr = 0 })
+		end, "Show file diagnostics")
 		map("<leader>sD", builtin.diagnostics, "show workspace diagnostics")
 		map("<leader>ss", builtin.lsp_document_symbols, "Show Document Symbols")
 		map("<leader>sS", builtin.lsp_dynamic_workspace_symbols, "Show Workspace Symbols")

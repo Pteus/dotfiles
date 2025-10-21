@@ -44,6 +44,7 @@ return {
 			{ "<leader>c", group = "code" },
 			{ "<leader>f", group = "find" },
 			{ "<leader>l", group = "lazy" },
+			{ "<leader>d", group = "debug" },
 		},
 	},
 }
